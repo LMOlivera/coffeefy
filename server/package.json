@@ -1,0 +1,28 @@
+{
+  "name": "coffeefy",
+  "version": "0.0.0",
+  "description": "We often argue at work about who's turn is it to make coffee. With this app, that won't happen anymore!",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LMOlivera/coffeefy.git"
+  },
+  "author": "Lucas Olivera",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LMOlivera/coffeefy/issues"
+  },
+  "homepage": "https://github.com/LMOlivera/coffeefy#readme",
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "nodemon": "^2.0.6"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
