@@ -3,5 +3,7 @@ We often argue at work about who's turn is it to make coffee. With this app, tha
 
 ### Technology Stack
 - Git/Github.
-- Node.
+- Node. 
   - Express.
+  - hbs.
+  - MongoDB and Mongoose.
