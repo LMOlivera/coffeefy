@@ -1,6 +1,7 @@
 const express = require('express');
 const router = new express.Router();
 const User = require('../models/user');
+const Team = require('../models/team');
 
 router.get('/login', (req, res) => {
     res.render('login');
@@ -8,6 +9,7 @@ router.get('/login', (req, res) => {
 
 router.post('/login', async (req, res) => {
     const foundUser = await User.findOne({email: req.body.email, password: req.body.password}).exec();
+    //const foundUser = User.findByCredentials(req.body.email, req.body.password);
     if (foundUser) {
         // Log into the app
     } else {
@@ -20,10 +22,37 @@ router.get('/signup', (req, res) => {
 })
 
 router.post('/signup', async (req, res) => {
-    const newUser = new User(req.body);
+    // TODO: Validate user input
+    // TODO: Validate user and team don't exist before creating them
     try {
+        const newUser = await new User(req.body);
+        if (req.body.teamName) {
+            // Signup for user and new team
+            const newTeam = await new Team({teamName: req.body.teamName,
+                                            members: [newUser]});
+            newTeam.teamCode = await Team.generateTeamCode();
+            newUser.teamCode = newTeam.teamCode;
+            await newTeam.save();     
+        } else {
+            // Signup to existing team
+            const foundTeam = await Team.findOne({teamCode: req.body.teamCode}).exec();
+            console.log(foundTeam);
+            const updatedMembers = foundTeam.members;
+            updatedMembers.push(newUser);
+            if (foundTeam) {
+                const test = await Team.findOneAndUpdate({_id: foundTeam._id}, {members: updatedMembers}).exec();
+                console.log(test);
+            } else {
+                throw new Error('Team not found');
+            }
+        }
+
         await newUser.save();
+        
     } catch(error) {
+        // TODO: Check if is necessary to delete team
+        // TODO: Delete user
+        console.log('Error: ', error);
         res.redirect('/login');
     }
 })
