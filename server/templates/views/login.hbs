@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+    </head>
+    <body>
+        <div>
+            <h1>Login</h1>
+            <form action="/login" method="POST">
+                <input name="email" type="email" placeholder="Email" required/>
+                <input name="password" type="password" placeholder="Password" required/>
+                <button type="submit">Log In</button>
+            </form>
+        </div>
+        <div>
+            <h1>Register</h1>
+            <h3>New Team</h3>
+            <form action="/signup" method="POST">
+                <input name="teamName" type="text" placeholder="Team Name" required/>
+                <input name="name" type="text" placeholder="Name" required/>
+                <input name="email" type="email" placeholder="Email" required/>
+                <input name="password" type="password" placeholder="Password" required/>
+                <button type="submit">Register</button>
+            </form>
+            <h3>Existing Team</h3>
+            <form action="/signup" method="POST">
+                <input name="teamCode" type="text" placeholder="Team Code" required/>
+                <input name="name" type="text" placeholder="Name" required/>
+                <input name="email" type="email" placeholder="Email" required/>
+                <input name="password" type="password" placeholder="Password" required/>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </body>
+</html>
