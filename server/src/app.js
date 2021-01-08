@@ -30,10 +30,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(loginRouter);
 
 app.get('/', (req, res) => {
-    res.render('index', {
-        title: 'Home Page',
-        name: 'Mateo'
-    });
+    res.render('index');
 })
 
 module.exports = app;
