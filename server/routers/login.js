@@ -8,13 +8,18 @@ router.get('/login', (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-    const foundUser = await User.findOne({email: req.body.email, password: req.body.password}).exec();
-    //const foundUser = User.findByCredentials(req.body.email, req.body.password);
-    if (foundUser) {
-        // Log into the app
-    } else {
-        res.redirect('/login');
-    }
+    try {
+        const foundUser = await User.findByCredentials(req.body.email, req.body.password);
+        
+        if (foundUser) {
+            req.session.name = foundUser.name;
+            res.redirect('/home');
+        } else {
+            res.redirect('/login');
+        }
+    } catch(e) {
+        // Server error 500
+    }    
 })
 
 router.get('/signup', (req, res) => {
@@ -52,9 +57,14 @@ router.post('/signup', async (req, res) => {
     } catch(error) {
         // TODO: Check if is necessary to delete team
         // TODO: Delete user
-        console.log('Error: ', error);
+        console.log('POST /signup Error: ', error);
         res.redirect('/login');
     }
+})
+
+router.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
 })
 
 module.exports = router;

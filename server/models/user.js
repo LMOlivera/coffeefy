@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema({
     },
     teamCode: {
         type: String,
+        unique: true,
         required: true
     }
 });
