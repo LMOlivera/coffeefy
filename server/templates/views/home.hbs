@@ -2,8 +2,40 @@
 <html>
     <head>
         <title>Coffeefy - Home Page</title>
+        <link rel="stylesheet" type="text/css" href="css/home.css">
     </head>
     <body>
         Hello, {{user}}
+        <section>
+            <a href="/home">Home</a>
+            <a href="/settings">My Settings</a>
+            <a href="/logout">Log Out</a>
+        </section>
+        <section>
+            <div>Calendar</div>
+            <div id="year">Year</div>
+            <div>
+                <button>Previous Month</button>
+                <div id="month">Month</div>
+                <button>Next Month</button>
+            </div>            
+            <ul id="weekdays">
+                <li>S</li>
+                <li>M</li>
+                <li>T</li>
+                <li>W</li>
+                <li>T</li>
+                <li>F</li>
+                <li>S</li>                
+            </ul>
+            <ul id="days">
+            </ul>
+        </section>
+        <section>
+            <div>
+                Coffee Makers
+            </div>
+        </section>
+        <script src="js/home.js"></script>
     </body>
 </html>
