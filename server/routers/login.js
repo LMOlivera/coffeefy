@@ -2,8 +2,9 @@ const express = require('express');
 const router = new express.Router();
 const User = require('../models/user');
 const Team = require('../models/team');
+const {authenticated, notAuthenticated} = require('../middleware/auth');
 
-router.get('/login', (req, res) => {
+router.get('/login', notAuthenticated, (req, res) => {
     res.render('login');
 })
 
@@ -23,7 +24,7 @@ router.post('/login', async (req, res) => {
     }    
 })
 
-router.get('/signup', (req, res) => {
+router.get('/signup', notAuthenticated, async (req, res) => {
     
 })
 
