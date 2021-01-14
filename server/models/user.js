@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         unique: true,
         required: true
+    },
+    makerSince: {
+        type: Date,
+        required: true
     }
 });
 

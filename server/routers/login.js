@@ -13,6 +13,7 @@ router.post('/login', async (req, res) => {
         
         if (foundUser) {
             req.session.name = foundUser.name;
+            req.session.teamCode = foundUser.teamCode;
             res.redirect('/home');
         } else {
             res.redirect('/login');
@@ -31,6 +32,7 @@ router.post('/signup', async (req, res) => {
     // TODO: Validate user and team don't exist before creating them
     try {
         const newUser = await new User(req.body);
+        newUser.makerSince = new Date();
         if (req.body.teamName) {
             // Signup for user and new team
             const newTeam = await new Team({teamName: req.body.teamName,

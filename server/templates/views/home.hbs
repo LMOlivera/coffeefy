@@ -15,9 +15,9 @@
             <div>Calendar</div>
             <div id="year">Year</div>
             <div>
-                <button>Previous Month</button>
+                <button onclick="previousMonth()">Previous Month</button>
                 <div id="month">Month</div>
-                <button>Next Month</button>
+                <button onclick="nextMonth()">Next Month</button>
             </div>            
             <ul id="weekdays">
                 <li>S</li>
@@ -34,6 +34,9 @@
         <section>
             <div>
                 Coffee Makers
+                {{#members}}
+                    {{this}}
+                {{/members}}
             </div>
         </section>
         <script src="js/home.js"></script>
