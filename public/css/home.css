@@ -65,6 +65,20 @@
 
 
 /*Calendar*/
+#calendar {
+
+}
+
+#calendar-navigation {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#year,
+#month {
+    text-align: center;    
+}
+
 ul {
     list-style-type: none;
 }

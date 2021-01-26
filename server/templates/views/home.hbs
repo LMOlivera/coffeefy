@@ -27,24 +27,32 @@
                 </div>            
             </section>
             <section class="main-content">
-                <div>Calendar</div>
-                <div id="year">Year</div>
-                <div>
-                    <button onclick="previousMonth()">Previous Month</button>
-                    <div id="month">Month</div>
-                    <button onclick="nextMonth()">Next Month</button>
-                </div>            
-                <ul id="weekdays">
-                    <li>S</li>
-                    <li>M</li>
-                    <li>T</li>
-                    <li>W</li>
-                    <li>T</li>
-                    <li>F</li>
-                    <li>S</li>                
-                </ul>
-                <ul id="days">
-                </ul>
+                <div id="calendar">                    
+                    <div id="calendar-navigation">
+                        <button onclick="previousMonth()">Previous Month</button>
+                        <div>
+                            <p id="year">
+                                Year
+                            </p>
+                            <p id="month">
+                                Month
+                            </p>
+                        </div>                        
+                        <button onclick="nextMonth()">Next Month</button>
+                    </div>            
+                    <ul id="weekdays">
+                        <li>S</li>
+                        <li>M</li>
+                        <li>T</li>
+                        <li>W</li>
+                        <li>T</li>
+                        <li>F</li>
+                        <li>S</li>                
+                    </ul>
+                    <ul id="days">
+                    </ul>
+                </div>
+                
                 <div>
                     Coffee Makers
                     {{#members}}
