@@ -13,8 +13,9 @@ router.post('/login', async (req, res) => {
         const foundUser = await User.findByCredentials(req.body.email, req.body.password);
         
         if (foundUser) {
+            const userTeam = await Team.findOne({teamCode: foundUser.teamCode});
             req.session.name = foundUser.name;
-            req.session.teamCode = foundUser.teamCode;
+            req.session.team = userTeam;
             res.redirect('/home');
         } else {
             res.redirect('/login');

@@ -52,6 +52,17 @@
                     <ul id="days">
                     </ul>
                 </div>
+
+                <div>
+                    {{#if madeToday}}
+                        Already made coffee today.
+                    {{else}}
+                        Today someone makes coffee!
+                        <form action="/mark" method="POST">
+                            <input type="submit" value="I will make coffee instead" />
+                        </form>
+                    {{/if}}                    
+                </div>
                 
                 <div>
                     Coffee Makers
