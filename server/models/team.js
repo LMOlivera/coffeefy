@@ -15,8 +15,27 @@ const teamSchema = new mongoose.Schema({
         ref: 'User'
     }],
     history: [{
-        type: String
-    }]
+        member: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        date: {
+            type: Date,
+            required: true
+        }        
+    }],
+    lastMade: {
+        member: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        date: {
+            type: Date,
+            required: true
+        }        
+    }
 });
 
 teamSchema.statics.generateTeamCode = async () => {
