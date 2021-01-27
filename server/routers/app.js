@@ -14,17 +14,20 @@ router.get('/home', authenticated, async (req, res) => {
 
     // Check if coffee was made today
     let madeToday;
+    if (userTeam.lastMade.date) {
+        let today = new Date();
+        today.setHours(0,0,0,0);
 
-    let today = new Date();
-    today.setHours(0,0,0,0);
+        let dateOfLastCoffee = userTeam.lastMade.date;
+        dateOfLastCoffee.setHours(0,0,0,0);
 
-    let dateOfLastCoffee = userTeam.lastMade.date;
-    dateOfLastCoffee.setHours(0,0,0,0);
-
-    if (today > dateOfLastCoffee || today < dateOfLastCoffee) { // We cannot use "==" or "===" with dates
-        madeToday = false;
+        if (today > dateOfLastCoffee || today < dateOfLastCoffee) { // We cannot use "==" or "===" with dates
+            madeToday = false;
+        } else {
+            madeToday = true;
+        }
     } else {
-        madeToday = true;
+        madeToday = false;
     }
     
     res.render('home', {user: req.session.name, members: filteredMembers, madeToday});
@@ -33,13 +36,23 @@ router.get('/home', authenticated, async (req, res) => {
 router.post('/mark', authenticated, async (req, res) => {
     // Add error handling
     const userData = await User.findOne({teamCode: req.session.team.teamCode}).exec();
-    console.log(userData);
-    let userTeam = await Team.findOneAndUpdate({teamCode: req.session.team.teamCode}, {
-            lastMade: {
+    
+    const today = new Date();
+    await Team.findOneAndUpdate({teamCode: req.session.team.teamCode}, {
+        lastMade: {
+            member: userData._id,
+            date: today
+        }
+    }).exec();
+    await Team.findOneAndUpdate({teamCode: req.session.team.teamCode}, {
+        $push: {
+            history: {
                 member: userData._id,
-                date: new Date()
+                date: today
             }
-        }).exec();
+        }        
+    }).exec();
+
     res.redirect('home');
 })
 

@@ -45,12 +45,11 @@ router.post('/signup', async (req, res) => {
         } else {
             // Signup to existing team
             const foundTeam = await Team.findOne({teamCode: req.body.teamCode}).exec();
-            console.log(foundTeam);
+            
             const updatedMembers = foundTeam.members;
             updatedMembers.push(newUser);
             if (foundTeam) {
                 const test = await Team.findOneAndUpdate({_id: foundTeam._id}, {members: updatedMembers}).exec();
-                console.log(test);
             } else {
                 throw new Error('Team not found');
             }
