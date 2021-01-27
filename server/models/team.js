@@ -15,6 +15,7 @@ const teamSchema = new mongoose.Schema({
         ref: 'User'
     }],
     history: [{
+        _id : false,
         member: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
