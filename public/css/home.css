@@ -38,6 +38,9 @@
     }
     .main-content {
     }
+    [tooltip] {
+        min-width: 12%;
+    }
 }
 
 @media (max-width: 767px) {
@@ -59,6 +62,9 @@
     }
     .main-content {
         
+    }
+    [tooltip] {
+        min-width: 30%;
     }
 }
 
@@ -108,13 +114,78 @@ ul {
 }
   
 #days li {
-    display: inline-block;
-    text-align: center;
+    display: flex;
+    justify-content: center;
     margin-bottom: 5px;
     font-size:12px;
+    height: 15px;
 }
 
 #today {
     color: red;
+    font-weight: bold;
 }
 /*Calendar End*/
+
+
+
+
+
+
+/* tooltip */
+[tooltip] {
+    background-color: green;
+    border-radius: 50%;    
+    position: relative;
+    text-align: center;
+    height: 100%;
+}
+
+[tooltip]::before {
+    content: attr(tooltip);
+    pointer-events: none;
+    white-space: pre;
+    position: absolute;
+    color: #fff;
+    background: #555;
+    padding: 0.3rem 2rem;
+    border-radius: 0.3rem;
+    opacity: 0;
+    visibility: none;
+
+    bottom: calc(0.5rem + 100%);
+    right: 50%;
+    transform: translateX(50%);
+}
+
+[tooltip]::after {
+    content: "";
+    pointer-events: none;
+    width: 0;
+    height: 0;
+    position: absolute;
+    border-color: #555;
+    border-width: 0;
+    border-style: solid;
+    opacity: 0;
+    visibility: none;
+
+    border-top-width: 0.5rem;
+    border-right-width: 0.5rem;
+    border-right-color: #0000;
+    border-left-width: 0.5rem;
+    border-left-color: #0000;
+    bottom: 100%;
+    right: 50%;
+    transform: translateX(50%);
+}
+
+[tooltip]:hover::before,
+[tooltip]:hover::after {
+    visibility: visible;
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0.2s;
+}

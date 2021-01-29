@@ -56,4 +56,45 @@ router.post('/mark', authenticated, async (req, res) => {
     res.redirect('home');
 })
 
+router.get('/calendar', authenticated, async(req, res) => {
+    // Verify req.query.year
+    const USER_TEAM = await Team.findOne({teamCode: req.session.team.teamCode}).exec();
+    let members = await User.find().where('_id').in(USER_TEAM.members).exec();
+    let formattedMembers = {};
+    members.map((member) => {
+        formattedMembers[member._id] = member.name;
+    });
+
+
+    let year = req.query.year;
+    console.log(year);
+    let monthData = {
+        0: {},
+        1: {},
+        2: {},
+        3: {},
+        4: {},
+        5: {},
+        6: {},
+        7: {},
+        8: {},
+        9: {},
+        10: {},
+        11: {}
+    };
+
+    USER_TEAM.history.map((record) => {
+        if (new Date(record.date).getFullYear() == year) {
+            let month = new Date(record.date).getMonth();
+            let day = new Date(record.date).getDate();
+
+            let dayData = {};
+            dayData[day] = formattedMembers[(record.member)];
+            Object.assign(monthData[month], dayData);
+        }        
+    });
+
+    res.send(monthData);
+})
+
 module.exports = router;

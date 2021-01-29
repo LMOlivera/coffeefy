@@ -61,32 +61,45 @@ function addDaysFromPreviousMonthToCalendar() {
     }
 }
 
-function addDaysToCalendar(presentDate, dateValue) {
-    let todayInCalendar;
+function addDaysToCalendar(presentDate, dateValue, coffeeData) {
+    let calendarMonth = dateValue.getMonth();
+    
+    let todayInCalendar; // For checking if Today's date is in the calendar
     if (presentDate.getFullYear() == dateValue.getFullYear() && presentDate.getMonth() == dateValue.getMonth()) {
         todayInCalendar = presentDate.getDate();
     }
+
     for (let i = 1; i <= lastDayOfMonth; i++) {
         let dayForContainer = document.createElement("li");
+        let divInsideDay = document.createElement("div");
         if (i==todayInCalendar) {
-            dayForContainer.setAttribute('id', 'today');
+            divInsideDay.setAttribute('id', 'today');            
         }
-        dayForContainer.appendChild(document.createTextNode(i));        
+        if (coffeeData[calendarMonth].hasOwnProperty(i)) {
+            divInsideDay.setAttribute('tooltip', coffeeData[calendarMonth][i]);
+        }        
+        
+        divInsideDay.appendChild(document.createTextNode(i));   
+        dayForContainer.appendChild(divInsideDay);
         
         DAYS_IN_CALENDAR.appendChild(dayForContainer);
     }
 }
 
-function initializeCalendar(dateValue) {
+async function initializeCalendar(dateValue) {
+    let response = await fetch('/calendar?year='+dateValue.getFullYear());
+    let coffeeData = await response.json();
+
     firstDayOfMonth = new Date(dateValue.getFullYear(), dateValue.getMonth(), 1);
     lastDayOfMonth = new Date(dateValue.getYear(), dateValue.getMonth() + 1, 0).getDate();
     currentMonth = dateValue.getMonth();
     currentYear = dateValue.getFullYear();
+
     MONTH_IN_CALENDAR.textContent = MONTH_NAMES[currentMonth];
     YEAR_IN_CALENDAR.textContent = currentYear;
+
     addDaysFromPreviousMonthToCalendar();
-    addDaysToCalendar(TODAY, dateValue);
+    addDaysToCalendar(TODAY, dateValue, coffeeData);
 }
 //////////
-
 initializeCalendar(TODAY);
