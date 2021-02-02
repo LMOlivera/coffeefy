@@ -12,6 +12,10 @@ router.get('/home', authenticated, async (req, res) => {
         return member.name
     });
 
+    let memberWhoLastPreparedCoffee = members.filter((member) => {
+        return member._id.toString().localeCompare(userTeam.lastMade.member);
+    });
+
     // Check if coffee was made today
     let madeToday;
     if (userTeam.lastMade.date) {
@@ -30,7 +34,7 @@ router.get('/home', authenticated, async (req, res) => {
         madeToday = false;
     }
     
-    res.render('home', {user: req.session.name, members: filteredMembers, madeToday});
+    res.render('home', {user: req.session.name, members: filteredMembers, madeToday, last: memberWhoLastPreparedCoffee[0].name});
 })
 
 router.post('/mark', authenticated, async (req, res) => {
@@ -41,6 +45,7 @@ router.post('/mark', authenticated, async (req, res) => {
     await Team.findOneAndUpdate({teamCode: req.session.team.teamCode}, {
         lastMade: {
             member: userData._id,
+            name: req.session.name,
             date: today
         }
     }).exec();
@@ -67,7 +72,7 @@ router.get('/calendar', authenticated, async(req, res) => {
 
 
     let year = req.query.year;
-    console.log(year);
+
     let monthData = {
         0: {},
         1: {},

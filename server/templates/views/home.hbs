@@ -57,6 +57,7 @@
                     {{#if madeToday}}
                         Already made coffee today.
                     {{else}}
+                        Last time, {{last}} made coffee.
                         Today someone makes coffee!
                         <form action="/mark" method="POST">
                             <input type="submit" value="I will make coffee instead" />
