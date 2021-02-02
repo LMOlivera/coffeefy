@@ -10,18 +10,20 @@ router.get('/home', authenticated, async (req, res) => {
 
     let filteredMembers = [];
     let memberWhoLastPreparedCoffee;
+    let pointerToLastCoffee;
     let memberWhoPreparesCoffeeToday;
     for (let i = 0; i < members.length; i++) {
         filteredMembers.push(members[i].name);
-        if (memberWhoLastPreparedCoffee && !memberWhoPreparesCoffeeToday) {
-            memberWhoPreparesCoffeeToday = members[i];
-        }
+
         if (members[i]._id.toString().localeCompare(userTeam.lastMade.member)) {
             memberWhoLastPreparedCoffee = members[i];
+            pointerToLastCoffee = i;
         }
     }
-    if (!memberWhoPreparesCoffeeToday) {
+    if (pointerToLastCoffee == members.length-1) {
         memberWhoPreparesCoffeeToday = members[0];
+    } else {
+        memberWhoPreparesCoffeeToday = members[pointerToLastCoffee+1];
     }
 
     // Check if coffee was made today
@@ -55,7 +57,7 @@ router.get('/home', authenticated, async (req, res) => {
 
 router.post('/mark', authenticated, async (req, res) => {
     // Add error handling
-    const userData = await User.findOne({teamCode: req.session.team.teamCode}).exec();
+    const userData = await User.findOne({teamCode: req.session.team.teamCode, name: req.session.name}).exec();
     
     const today = new Date();
     await Team.findOneAndUpdate({teamCode: req.session.team.teamCode}, {
