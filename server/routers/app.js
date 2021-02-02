@@ -8,13 +8,21 @@ router.get('/home', authenticated, async (req, res) => {
     let userTeam = await Team.findOne({teamCode: req.session.team.teamCode}).exec();
     let members = await User.find().where('_id').in(userTeam.members).sort({makerSince: 1}).exec();
 
-    let filteredMembers = members.map((member) => {
-        return member.name
-    });
-
-    let memberWhoLastPreparedCoffee = members.filter((member) => {
-        return member._id.toString().localeCompare(userTeam.lastMade.member);
-    });
+    let filteredMembers = [];
+    let memberWhoLastPreparedCoffee;
+    let memberWhoPreparesCoffeeToday;
+    for (let i = 0; i < members.length; i++) {
+        filteredMembers.push(members[i].name);
+        if (memberWhoLastPreparedCoffee && !memberWhoPreparesCoffeeToday) {
+            memberWhoPreparesCoffeeToday = members[i];
+        }
+        if (members[i]._id.toString().localeCompare(userTeam.lastMade.member)) {
+            memberWhoLastPreparedCoffee = members[i];
+        }
+    }
+    if (!memberWhoPreparesCoffeeToday) {
+        memberWhoPreparesCoffeeToday = members[0];
+    }
 
     // Check if coffee was made today
     let madeToday;
@@ -34,7 +42,15 @@ router.get('/home', authenticated, async (req, res) => {
         madeToday = false;
     }
     
-    res.render('home', {user: req.session.name, members: filteredMembers, madeToday, last: memberWhoLastPreparedCoffee[0].name});
+    res.render('home',
+        {
+            user: req.session.name,
+            members: filteredMembers,
+            madeToday,
+            last: memberWhoLastPreparedCoffee.name,
+            today: memberWhoPreparesCoffeeToday.name
+        }
+    );
 })
 
 router.post('/mark', authenticated, async (req, res) => {
